@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MPI Penggolongan Obat</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{background:linear-gradient(135deg,#bfdbfe,#eff6ff 60%,#dbeafe);font-family:system-ui,Segoe UI,sans-serif;color:#1e293b}
+.btn{transition:.15s;cursor:pointer}.btn:hover:not(:disabled){transform:translateY(-2px);filter:brightness(1.12)}.btn:disabled{cursor:default}
+.scr{display:none}.scr.on{display:block;animation:in .5s}
+@keyframes in{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(.3);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+@keyframes fl{50%{transform:translateY(-12px)}}
+.pop{animation:pop .9s both}.fl{animation:fl 2.5s infinite}
+@media print{body *{visibility:hidden}#certbox,#certbox *{visibility:visible}#certbox{position:absolute;left:0;top:0;width:100%}.np{display:none!important}}
+</style></head>
+<body>
+<button id="home" class="btn hidden fixed top-3 left-3 z-50 bg-blue-700 text-white font-bold px-4 py-2 rounded-xl shadow-lg np" onclick="show('menu')">🏠 HOME</button>
+<main class="max-w-3xl mx-auto p-4 pt-16">
+
+<section id="splash" class="scr on text-center pt-4">
+ <div class="text-7xl fl">💊</div>
+ <h1 class="pop text-5xl md:text-6xl font-black text-blue-800 mt-3 leading-tight">PENGGOLONGAN OBAT</h1>
+ <p class="pop text-lg text-blue-700 mt-2" style="animation-delay:.4s">Media Pembelajaran Interaktif • Perundang-undangan Kesehatan • Kelas X SMK</p>
+ <div class="pop mt-8" style="animation-delay:.8s">
+  <label for="nm" class="block font-semibold text-blue-800 mb-1">Tulis namamu:</label>
+  <input id="nm" type="text" maxlength="40" autocomplete="off" placeholder="Nama lengkap siswa" class="w-72 max-w-full text-center text-lg border-2 border-blue-400 rounded-xl px-4 py-2 outline-none focus:border-blue-700 bg-white">
+  <label for="kls" class="block font-semibold text-blue-800 mt-3 mb-1">Tulis kelasmu:</label>
+  <input id="kls" type="text" maxlength="20" autocomplete="off" placeholder="Contoh: X Farmasi 1" class="w-72 max-w-full text-center text-lg border-2 border-blue-400 rounded-xl px-4 py-2 outline-none focus:border-blue-700 bg-white">
+  <div><button class="btn mt-5 bg-blue-700 text-white text-2xl font-black px-12 py-3 rounded-2xl shadow-lg" onclick="start()">MULAI ▶</button></div>
+ </div>
+ <p class="mt-10 text-sm text-blue-900">Pengembang: Mia Nurfalah, S.Farm • Tahun 2026</p>
+</section>
+
+<section id="menu" class="scr">
+ <h2 class="text-3xl font-black text-blue-800 text-center">MENU UTAMA</h2>
+ <p class="text-center text-blue-700 mb-5">Halo, <b id="hi"></b>! Pilih kegiatan belajarmu.</p>
+ <div class="grid grid-cols-2 gap-4">
+  <button class="btn bg-blue-600 text-white rounded-2xl p-6 text-2xl font-black shadow" onclick="show('beranda')">🏫<br>BERANDA</button>
+  <button class="btn bg-blue-700 text-white rounded-2xl p-6 text-2xl font-black shadow" onclick="show('materi');mat(0)">📖<br>MATERI</button>
+  <button class="btn bg-blue-800 text-white rounded-2xl p-6 text-2xl font-black shadow" onclick="sstart()">🧪<br>SIMULASI</button>
+  <button class="btn bg-sky-600 text-white rounded-2xl p-6 text-2xl font-black shadow" onclick="show('kuis')">🎮<br>KUIS</button>
+ </div>
+ <div class="bg-white rounded-2xl p-4 mt-5 shadow flex flex-wrap items-center gap-4 justify-center">
+  <b class="text-blue-800">⚙️ Pengaturan</b>
+  <button id="mus" class="btn bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold" onclick="tgl()">🎵 Musik: ON</button>
+  <label class="flex items-center gap-2 text-blue-800 font-semibold">🔊 <input id="vol" type="range" min="0" max="100" value="50" class="w-36" oninput="vol=this.value/100"></label>
+ </div>
+ <p class="text-center text-sm text-blue-900 mt-6">Pengembang: Mia Nurfalah, S.Farm • Tahun 2026</p>
+</section>
+
+<section id="beranda" class="scr">
+ <div class="bg-white rounded-2xl p-6 shadow">
+  <h2 class="text-2xl font-black text-blue-800">Beranda</h2>
+  <p class="mt-2"><b>Tema:</b> Penggolongan Obat</p>
+  <p class="mt-2"><b>Tujuan Pembelajaran:</b> Siswa dapat mengidentifikasi dan menyelesaikan masalah yang berkaitan dengan penggolongan obat.</p>
+  <p class="mt-2 font-bold text-blue-800">Petunjuk:</p>
+  <ol class="list-decimal ml-6">
+   <li>Pelajari <b>MATERI</b> sampai tuntas.</li><li>Asah kemampuan lewat <b>KUIS</b> (4 permainan, bertingkat).</li>
+   <li>Kerjakan <b>SIMULASI</b> 10 soal untuk mendapat nilai dan sertifikat.</li></ol>
+ </div>
+</section>
+
+<section id="materi" class="scr">
+ <h2 class="text-2xl font-black text-blue-800 mb-3">Materi</h2>
+ <div id="tabs" class="flex flex-wrap gap-2 mb-3"></div>
+ <div id="mc" class="bg-white rounded-2xl p-6 shadow"></div>
+</section>
+
+<section id="kuis" class="scr">
+ <h2 class="text-2xl font-black text-blue-800 mb-1">Kuis — Pilih Permainan</h2>
+ <p class="text-blue-700 mb-3">Setiap permainan punya level yang makin sulit.</p>
+ <div id="kl" class="grid grid-cols-2 gap-4"></div>
+</section>
+
+<section id="play" class="scr">
+ <div class="bg-white rounded-2xl p-6 shadow text-center">
+  <div class="flex justify-between font-bold text-blue-800"><span id="qh"></span><span id="qt" class="text-red-600"></span></div>
+  <div id="qlogo" class="my-3"></div>
+  <p id="qq" class="text-xl font-bold mb-4"></p>
+  <div id="qo" class="text-left"></div><div id="qf" class="mt-2"></div>
+ </div>
+</section>
+
+<section id="sim" class="scr">
+ <div class="bg-white rounded-2xl p-6 shadow">
+  <div class="flex justify-between font-bold text-blue-800"><span id="sh"></span><span id="ssk"></span></div>
+  <p id="sinfo" class="text-sm text-blue-600 mb-2"></p>
+  <div id="sb"></div><div id="sf" class="mt-3"></div>
+ </div>
+</section>
+
+<section id="cert" class="scr">
+ <div id="certbox" class="bg-white text-center p-8 rounded-2xl" style="border:10px double #1d4ed8">
+  <div class="text-5xl">🏆</div>
+  <h2 class="text-3xl font-black text-blue-800 mt-1">SERTIFIKAT PENCAPAIAN</h2>
+  <p class="mt-4">Diberikan kepada</p>
+  <p id="cn" class="text-4xl font-black text-blue-700 my-2 break-words" style="font-family:Georgia,serif"></p>
+  <p class="font-semibold text-blue-800">Kelas <span id="ck"></span></p>
+  <p>atas keberhasilan menyelesaikan Simulasi <b>Penggolongan Obat</b><br>Perundang-undangan Kesehatan • Kelas X SMK</p>
+  <p class="text-5xl font-black text-amber-500 mt-3" id="cs"></p><p class="font-bold text-blue-800" id="cp"></p>
+  <p class="mt-4 text-sm" id="cd"></p>
+  <p class="text-sm text-blue-900">Pengembang: Mia Nurfalah, S.Farm • 2026</p>
+  <p id="cm" class="text-xs text-slate-500 mt-2 np"></p>
+  <div class="mt-4 flex flex-wrap gap-2 justify-center np">
+   <button class="btn bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold" onclick="print()">🖨️ Cetak</button>
+   <button class="btn bg-sky-600 text-white px-4 py-2 rounded-lg font-semibold" onclick="csv()">⬇️ Unduh CSV (Canva Sheet)</button>
+   <button class="btn bg-blue-900 text-white px-4 py-2 rounded-lg font-semibold" onclick="show('menu')">Menu Utama</button>
+  </div>
+ </div>
+</section>
+</main>
+
+<script>
+// === PENGATURAN: tempel URL Web App (Google Apps Script) di sini agar nilai terkirim otomatis ke lembar data ===
+const SHEET_URL="";
+const $=s=>document.querySelector(s);
+let nama="",kelas="",ac,vol=.5,on=true,bg,tm,mi=0,gi,li,sc,si,ss,sa,fin={};
+
+/* ---------- AUDIO (disintesis, tanpa file eksternal) ---------- */
+function tone(f,d,ty,v,at){at=at||0;const o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime+at;o.type=ty;o.frequency.value=f;
+ g.gain.setValueAtTime(Math.max(.0001,v*vol),t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+d)}
+function sfx(k){if(!ac)return;if(k=='ok')[523,659,784].forEach((f,i)=>tone(f,.18,'triangle',.5,i*.09));
+ else if(k=='no')[300,220].forEach((f,i)=>tone(f,.22,'sawtooth',.25,i*.12));else tone(700,.07,'square',.25)}
+const mel=[523,659,784,659,587,740,880,740,523,659,784,1047];
+function bgOn(){clearInterval(bg);if(!on||!ac)return;const p=()=>mel.forEach((f,i)=>tone(f,.22,'triangle',.3,i*.25));p();bg=setInterval(p,3000)}
+function tgl(){on=!on;$('#mus').textContent='🎵 Musik: '+(on?'ON':'OFF');on?bgOn():clearInterval(bg)}
+document.addEventListener('click',e=>{if(e.target.closest('button'))sfx()});
+
+/* ---------- NAVIGASI ---------- */
+function show(id){clearInterval(tm);document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));$('#'+id).classList.add('on');
+ $('#home').classList.toggle('hidden',id=='splash');scrollTo(0,0)}
+function start(){const v=$('#nm').value.trim(),k=$('#kls').value.trim();
+ if(!v){$('#nm').focus();$('#nm').style.borderColor='#dc2626';return}
+ if(!k){$('#kls').focus();$('#kls').style.borderColor='#dc2626';return}
+ nama=v;kelas=k;$('#hi').textContent=nama;ac=ac||new(window.AudioContext||window.webkitAudioContext)();ac.resume();bgOn();show('menu');qlist()}
+['#nm','#kls'].forEach(i=>$(i).addEventListener('keydown',e=>{if(e.key=='Enter')start()}));
+
+/* ---------- LOGO ---------- */
+const LC={bebas:'#22c55e',terbatas:'#3b82f6',keras:'#ef4444'};
+function logo(k,s){s=s||64;const h=`<svg width="${s}" height="${s}" viewBox="0 0 100 100" class="inline-block">`;
+ if(k=='narkotika')return h+'<circle cx="50" cy="50" r="44" fill="#fff" stroke="#000" stroke-width="6"/><path d="M42 20h16v22h22v16H58v22H42V58H20V42h22z" fill="#dc2626"/></svg>';
+ return h+`<circle cx="50" cy="50" r="44" fill="${LC[k]}" stroke="#000" stroke-width="6"/>`+(k=='keras'?'<text x="50" y="68" font-size="50" font-weight="bold" text-anchor="middle" fill="#fff">K</text>':'')+'</svg>'}
+
+/* ---------- MATERI ---------- */
+const M=[
+{t:'Pengertian',x:'Penggolongan obat adalah pengelompokan obat berdasarkan tingkat keamanan dan cara memperolehnya, supaya penggunaannya tepat, aman, dan terkendali. Penandaan berupa logo pada kemasan membantu kita mengenali golongannya dengan cepat. Ada 4 golongan utama: obat bebas, obat bebas terbatas, obat keras (termasuk psikotropika), dan narkotika.',c:'Dasar hukum antara lain UU No. 17 Tahun 2023 tentang Kesehatan dan UU No. 35 Tahun 2009 tentang Narkotika. Semakin tinggi risiko, semakin ketat pengawasannya.'},
+{t:'Obat Bebas',k:'bebas',x:'Logo: lingkaran HIJAU dengan garis tepi hitam. Dapat dibeli tanpa resep dokter di apotek, toko obat, bahkan warung.',c:'Contoh: parasetamol, vitamin C, multivitamin. Tetap baca aturan pakai pada kemasan.'},
+{t:'Bebas Terbatas',k:'terbatas',x:'Logo: lingkaran BIRU dengan garis tepi hitam. Dapat dibeli tanpa resep, tetapi pada kemasan wajib ada tanda peringatan P No. 1 sampai P No. 6.',c:'Contoh: CTM (klorfeniramin), obat batuk tertentu. P No. 1 berbunyi: "Awas! Obat keras. Bacalah aturan memakainya".'},
+{t:'Obat Keras',k:'keras',x:'Logo: lingkaran MERAH dengan garis tepi hitam dan huruf K di tengah. Hanya dapat diperoleh dengan resep dokter. Golongan psikotropika termasuk dalam kelompok ini.',c:'Contoh: antibiotik amoksisilin; psikotropika: diazepam. Penyerahan dilakukan oleh apoteker di apotek.'},
+{t:'Narkotika',k:'narkotika',x:'Logo: lingkaran putih dengan palang (+) MERAH dan garis tepi hitam. Zat yang dapat menurunkan kesadaran, mengurangi rasa nyeri, dan menimbulkan ketergantungan. Diatur ketat oleh UU No. 35 Tahun 2009.',c:'Contoh: morfin, petidin. Wajib resep dokter dan disimpan di lemari khusus berkunci ganda.'}];
+function mat(i){mi=i;$('#tabs').innerHTML=M.map((m,j)=>`<button class="btn px-3 py-2 rounded-lg font-semibold ${j==i?'bg-blue-700 text-white':'bg-white text-blue-700 border border-blue-300'}" onclick="mat(${j})">${m.t}</button>`).join('');
+ const m=M[i];$('#mc').innerHTML=`<div class="flex gap-4 items-center">${m.k?logo(m.k,80):'<span class="text-5xl">💊</span>'}<h3 class="text-2xl font-black text-blue-800">${m.t}</h3></div>
+ <p class="mt-3">${m.x}</p><button class="btn mt-4 bg-amber-400 font-bold px-4 py-2 rounded-lg" onclick="document.getElementById('rv').classList.toggle('hidden')">👆 Klik: contoh & aturan</button>
+ <div id="rv" class="hidden mt-3 bg-blue-50 p-3 rounded-lg">${m.c}</div>
+ <div class="flex justify-between mt-5"><button class="btn bg-blue-600 text-white px-4 py-2 rounded-lg disabled:opacity-40" ${i==0?'disabled':''} onclick="mat(${i-1})">◀ Sebelumnya</button><span class="text-blue-700 font-bold">${i+1}/${M.length}</span><button class="btn bg-blue-600 text-white px-4 py-2 rounded-lg disabled:opacity-40" ${i==M.length-1?'disabled':''} onclick="mat(${i+1})">Berikutnya ▶</button></div>`}
+
+/* ---------- KUIS ---------- */
+const TF=['Benar','Salah'];
+const G=[
+{n:'Tebak Logo',i:'🎯',l:[
+ {k:'bebas',q:'Logo ini termasuk golongan?',o:['Obat Bebas','Obat Keras'],a:0},
+ {k:'terbatas',q:'Logo ini termasuk golongan?',o:['Obat Bebas','Obat Keras','Bebas Terbatas'],a:2},
+ {k:'keras',q:'Logo ini termasuk golongan?',o:['Obat Bebas','Bebas Terbatas','Narkotika','Obat Keras'],a:3},
+ {k:'narkotika',q:'Logo ini termasuk golongan?',o:['Obat Keras','Bebas Terbatas','Narkotika','Obat Bebas'],a:2}]},
+{n:'Benar atau Salah',i:'✅',l:[
+ {q:'Obat bebas berlogo lingkaran hijau bergaris tepi hitam.',o:TF,a:0},
+ {q:'Obat keras boleh dibeli tanpa resep di warung.',o:TF,a:1},
+ {q:'Obat bebas terbatas wajib disertai tanda peringatan P No. 1–6.',o:TF,a:0},
+ {q:'Narkotika berlogo lingkaran biru.',o:TF,a:1},
+ {q:'Psikotropika termasuk kelompok obat keras.',o:TF,a:0}]},
+{n:'Kasus di Apotek',i:'🏥',l:[
+ {q:'Pasien demam ringan membeli parasetamol. Termasuk golongan apa?',o:['Obat bebas','Obat keras','Narkotika'],a:0},
+ {q:'Pasien pilek membeli CTM. Golongan dan logonya?',o:['Obat bebas, hijau','Bebas terbatas, biru','Obat keras, merah K'],a:1},
+ {q:'Pasien tanpa resep meminta amoksisilin (antibiotik). Tindakan yang tepat?',o:['Menjual saja','Memberi setengah dosis','Menolak dan menyarankan ke dokter'],a:2},
+ {q:'Morfin yang diresepkan harus disimpan di ...',o:['Rak depan etalase','Lemari khusus berkunci ganda','Kotak obat bebas'],a:1}]},
+{n:'Kilat 15 Detik',i:'⚡',t:15,l:[
+ {q:'Logo lingkaran hijau = ?',o:['Obat bebas','Obat keras'],a:0},
+ {q:'Logo lingkaran biru = ?',o:['Narkotika','Obat bebas','Bebas terbatas'],a:2},
+ {q:'Huruf K dalam lingkaran merah = ?',o:['Obat keras','Bebas terbatas','Obat bebas'],a:0},
+ {q:'Palang merah dalam lingkaran putih = ?',o:['Obat bebas','Narkotika','Bebas terbatas','Obat keras'],a:1},
+ {q:'Tanda peringatan P No. 1 berbunyi?',o:['Hanya untuk dibakar','Obat wasir, jangan ditelan','Awas! Obat keras. Bacalah aturan memakainya'],a:2}]}];
+const OB='btn w-full text-left bg-white border-2 border-blue-300 text-blue-800 font-semibold px-4 py-3 rounded-xl mb-2';
+function qlist(){$('#kl').innerHTML=G.map((g,i)=>`<button class="btn bg-blue-700 text-white rounded-2xl p-5 text-xl font-black shadow" onclick="gstart(${i})">${g.i}<br>${g.n}<small class="block font-normal">${g.l.length} level</small></button>`).join('')}
+function gstart(i){gi=i;li=0;sc=0;show('play');qshow()}
+function qshow(){const g=G[gi];if(li>=g.l.length)return qend();const q=g.l[li];
+ $('#qh').textContent=`${g.n} • Level ${li+1}/${g.l.length} • Skor ${sc}`;$('#qlogo').innerHTML=q.k?logo(q.k,96):'';$('#qq').textContent=q.q;$('#qf').innerHTML='';
+ $('#qo').innerHTML=q.o.map((t,i)=>`<button class="${OB}" onclick="ans(${i})">${t}</button>`).join('');
+ clearInterval(tm);$('#qt').textContent='';
+ if(g.t){let tl=g.t;$('#qt').textContent='⏱ '+tl;tm=setInterval(()=>{tl--;$('#qt').textContent='⏱ '+tl;if(tl<=0){clearInterval(tm);ans(-1)}},1000)}}
+function ans(i){clearInterval(tm);const q=G[gi].l[li];
+ [...$('#qo').children].forEach((b,j)=>{b.disabled=true;if(j==q.a)b.classList.add('!bg-green-500','!text-white');else if(j==i)b.classList.add('!bg-red-500','!text-white')});
+ const ok=i==q.a;if(ok)sc+=10;sfx(ok?'ok':'no');
+ $('#qf').innerHTML=`<p class="font-bold ${ok?'text-green-600':'text-red-600'}">${ok?'✅ Benar! +10':(i<0?'⏰ Waktu habis. ':'❌ Salah. ')+'Jawaban: '+q.o[q.a]}</p><button class="btn mt-2 bg-blue-700 text-white px-5 py-2 rounded-lg font-bold" onclick="li++;qshow()">Lanjut ➜</button>`}
+function qend(){const g=G[gi],mx=g.l.length*10;sfx('ok');$('#qh').textContent=g.n;$('#qt').textContent='';$('#qlogo').innerHTML='<span class="text-6xl">🎉</span>';
+ $('#qq').textContent=`Selesai! Skormu ${sc} dari ${mx}`;$('#qo').innerHTML='';
+ $('#qf').innerHTML=`<button class="btn bg-blue-700 text-white px-5 py-2 rounded-lg font-bold mr-2" onclick="gstart(gi)">🔁 Ulangi</button><button class="btn bg-sky-600 text-white px-5 py-2 rounded-lg font-bold" onclick="show('kuis')">Pilih Game Lain</button>`}
+
+/* ---------- SIMULASI (10 soal) ---------- */
+const S=[
+{t:'drag',s:'Logo lingkaran hijau menandakan obat ___.',w:['bebas','keras','narkotika'],a:'bebas'},
+{t:'mcq',q:'Obat yang hanya boleh diserahkan dengan resep dokter adalah ...',o:['Obat bebas','Obat bebas terbatas','Obat keras','Vitamin'],a:2},
+{t:'mark',s:'Logo obat keras berupa lingkaran hijau dengan huruf K di tengah.',a:['hijau']},
+{t:'drag',s:'Obat bebas terbatas berlogo lingkaran ___ bergaris tepi hitam.',w:['merah','biru','hijau'],a:'biru'},
+{t:'mcq',q:'Contoh obat narkotika adalah ...',o:['Parasetamol','Morfin','CTM','Vitamin C'],a:1},
+{t:'mark',s:'Antibiotik seperti amoksisilin termasuk obat bebas.',a:['bebas']},
+{t:'drag',s:'Narkotika berlogo ___ merah dalam lingkaran putih.',w:['palang','segitiga','bintang'],a:'palang'},
+{t:'mcq',q:'Tanda peringatan pada kemasan obat bebas terbatas disebut ...',o:['Tanda P No. 1–6','Tanda N','Tanda X','Tanda Q'],a:0},
+{t:'mark',s:'Narkotika disimpan di rak terbuka biasa.',a:['rak','terbuka','biasa']},
+{t:'drag',s:'Obat keras berlogo lingkaran ___ dengan huruf K.',w:['hijau','biru','merah'],a:'merah'}];
+const TI={drag:'Drag the Word: seret kata ke bagian kosong (atau ketuk kata).',mcq:'Pilihan Ganda: pilih jawaban yang paling tepat.',mark:'Mark the Word: klik kata yang SALAH pada kalimat.'};
+function sstart(){si=0;ss=0;show('sim');sshow()}
+function sshow(){if(si>=S.length)return cert();const q=S[si];sa=false;
+ $('#sh').textContent=`Soal ${si+1}/${S.length}`;$('#ssk').textContent='Benar: '+ss;$('#sinfo').textContent=TI[q.t];$('#sf').innerHTML='';let h='';
+ if(q.t=='mcq')h=`<p class="font-bold text-lg mb-3">${q.q}</p>`+q.o.map((t,i)=>`<button class="${OB}" onclick="mc(${i},this)">${t}</button>`).join('');
+ if(q.t=='drag')h=`<p class="font-bold text-lg mb-4">${q.s.replace('___','<span id="bl" ondragover="event.preventDefault()" ondrop="fill(event.dataTransfer.getData(\'text\'))" class="inline-block min-w-[110px] border-b-4 border-blue-600 text-center text-blue-700 px-2">&nbsp;</span>')}</p><div class="flex gap-2 flex-wrap">`+
+  q.w.map(w=>`<button draggable="true" ondragstart="event.dataTransfer.setData('text','${w}')" onclick="fill('${w}')" class="btn bg-blue-100 border-2 border-blue-400 text-blue-800 font-bold px-4 py-2 rounded-lg">${w}</button>`).join('')+'</div>';
+ if(q.t=='mark')h='<p class="text-lg flex flex-wrap gap-2">'+q.s.split(' ').map(w=>`<button class="btn bg-blue-50 border border-blue-300 px-2 py-1 rounded-lg" onclick="mk(this)">${w}</button>`).join('')+'</p>';
+ $('#sb').innerHTML=h}
+function mc(i,b){if(sa)return;b.classList.add(i==S[si].a?'!bg-green-500':'!bg-red-500','!text-white');sans(i==S[si].a)}
+function fill(w){if(sa)return;$('#bl').textContent=w;sans(w==S[si].a)}
+function mk(b){if(sa)return;const ok=S[si].a.includes(b.textContent.replace(/[.,]/g,''));b.classList.add(ok?'!bg-green-400':'!bg-red-400');sans(ok)}
+function sans(ok){sa=true;const q=S[si];if(ok)ss++;sfx(ok?'ok':'no');$('#ssk').textContent='Benar: '+ss;
+ const j=q.t=='mcq'?q.o[q.a]:[].concat(q.a)[0];
+ $('#sf').innerHTML=`<p class="font-bold ${ok?'text-green-600':'text-red-600'}">${ok?'✅ Benar!':'❌ Kurang tepat. Jawaban: '+j}</p><button class="btn mt-2 bg-blue-700 text-white px-5 py-2 rounded-lg font-bold" onclick="si++;sshow()">${si==S.length-1?'Lihat Sertifikat 🏆':'Lanjut ➜'}</button>`}
+
+/* ---------- SERTIFIKAT & DATA NILAI ---------- */
+function cert(){const n=ss*10,d=new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+ fin={nama,kelas,skor:n,tanggal:d};$('#cn').textContent=nama;$('#ck').textContent=kelas;$('#cs').textContent=n;$('#cp').textContent=n>=80?'Predikat: Sangat Baik':n>=60?'Predikat: Baik':'Predikat: Terus Berlatih';$('#cd').textContent=d;
+ $('#cm').textContent='';show('cert');sfx('ok');
+ if(SHEET_URL)fetch(SHEET_URL,{method:'POST',mode:'no-cors',body:JSON.stringify(fin)}).then(()=>$('#cm').textContent='✅ Nilai terkirim ke lembar data.').catch(()=>$('#cm').textContent='⚠️ Gagal mengirim. Gunakan tombol Unduh CSV.');
+ else $('#cm').textContent='ℹ️ SHEET_URL belum diisi. Gunakan Unduh CSV untuk diimpor ke Canva Sheet.'}
+function csv(){const b=new Blob(['Nama,Kelas,Skor,Tanggal\n"'+fin.nama.replace(/"/g,'""')+'","'+fin.kelas.replace(/"/g,'""')+'",'+fin.skor+',"'+fin.tanggal+'"'],{type:'text/csv'}),a=document.createElement('a');
+ a.href=URL.createObjectURL(b);a.download='nilai_'+fin.nama.replace(/\s+/g,'_')+'.csv';a.click()}
+</script></body></html>
